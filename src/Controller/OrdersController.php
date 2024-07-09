@@ -55,9 +55,47 @@ class OrdersController extends AppController
          
      }
 
-     public function confirm(){
+    //  public function confirm(){
+    //     $totalPrice = $this->request->getQuery('totalPrice');
+    //     // pr($totalPrice);die();
+    
+    //     // Get the authenticated user's ID
+    //     $user = $this->Authentication->getIdentity();
+    //     $userId = $user->id;
+    
+    //     // Prepare data to save into the orders table
+    //     $orderData = [
+    //         'user_id' => $userId,
+    //         'amount' => $totalPrice,
+    //         // Add other fields as needed
+    //     ];
+    
+    //     // Save the order
+    //     $order = $this->Orders->newEntity($orderData);
+    //     if ($this->Orders->save($order)) {
+    //         // Order saved successfully, now clear the cart
+    //         $this->clearCart($userId);
+    
+    //         // Redirect to the bill action after successful order placement
+    //         $this->Flash->success(__('Your order has been placed successfully.'));
+    //         return $this->redirect(['action' => 'bill']);
+    //     } else {
+    //         // Handle failed save
+    //         $this->Flash->error(__('Unable to place your order. Please try again.'));
+    //         return $this->redirect(['controller' => 'Cart', 'action' => 'checkout']);
+    //     }
+    // }
+    
+    // private function clearCart($userId) {
+    //     // Assuming you have a Cart model and it's properly associated
+    //     $this->loadModel('Carts');
+    
+    //     // Delete all cart items for the authenticated user
+    //     $this->Carts->deleteAll(['user_id' => $userId]);
+    // }
+    public function confirm(){
         $totalPrice = $this->request->getQuery('totalPrice');
-        // pr($totalPrice);die();
+        //pr($totalPrice);die();
     
         // Get the authenticated user's ID
         $user = $this->Authentication->getIdentity();
@@ -73,8 +111,8 @@ class OrdersController extends AppController
         // Save the order
         $order = $this->Orders->newEntity($orderData);
         if ($this->Orders->save($order)) {
-            // Order saved successfully, now clear the cart
-            $this->clearCart($userId);
+            // Clear the cart
+            $this->clearCart();
     
             // Redirect to the bill action after successful order placement
             $this->Flash->success(__('Your order has been placed successfully.'));
@@ -86,13 +124,15 @@ class OrdersController extends AppController
         }
     }
     
-    private function clearCart($userId) {
-        // Assuming you have a Cart model and it's properly associated
-        $this->loadModel('Carts');
-    
-        // Delete all cart items for the authenticated user
-        $this->Carts->deleteAll(['user_id' => $userId]);
+    private function clearCart() {
+        // Logic to clear the cart
+        // Execute a delete query to remove all records from the cart table
+        $this->loadModel('Cart'); // Load Cart model if it's not already loaded
+        $this->Cart->deleteAll([]); // This will delete all records from the cart table
     }
+    
+    
+    
     
      
     //  public function confirm(){
@@ -196,6 +236,32 @@ class OrdersController extends AppController
         $this->set('latestOrder', $latestOrder);
 
          }
+
+        // public function bill(){
+        //     // Your existing code
+        //     $latestOrder = $this->Orders->find()
+        //         ->contain(['Users' => function ($q) {
+        //             return $q->select(['name', 'lastname', 'address', 'email', 'phone_number', 'city', 'state', 'zip']);
+        //         }])
+        //         ->select(['id', 'user_id', 'amount', 'date'])
+        //         ->order(['Orders.date' => 'DESC'])
+        //         ->first();
+        
+        //     $this->set('latestOrder', $latestOrder);
+        
+        //     // Assuming you have access to the Cart model
+        //     $this->loadModel('Cart');
+        //     $cart = $this->Cart->find()->where(['product_id' => $latestOrder->product_id])->first();
+        
+        //     if ($cart) {
+        //         // Delete all cart items associated with this cart
+        //         $this->Cart->CartItems->deleteAll(['cart_id' => $cart->id]);
+        //         // Delete the cart itself
+        //         $this->Cart->delete($cart);
+        //     }
+        // }        
+
+
 
 
 // public function confirmOrder() {

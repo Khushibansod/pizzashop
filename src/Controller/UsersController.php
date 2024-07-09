@@ -18,7 +18,7 @@ class UsersController extends AppController
         
     // }
 
-    public function signup(){
+    public function adduser(){
         $this->loadModel('Users');
         
         // Create a new User entity
@@ -44,9 +44,11 @@ class UsersController extends AppController
         $this->set(compact('user'));
 
     }
-    public function bill(){
-        return $this->redirect(['controller' => 'Orders', 'action' => 'bill']);
+
+    public function addguest(){
+
     }
+ 
 
     public function beforeFilter(\Cake\Event\EventInterface $event)
 {
@@ -55,6 +57,8 @@ class UsersController extends AppController
     // the infinite redirect loop issue
     $this->Authentication->addUnauthenticatedActions(['login']);
 }
+
+
 
 
 public function login()
@@ -86,11 +90,18 @@ public function logout()
         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
 }
+
+
+public function bill(){
+    return $this->redirect(['controller' => 'Orders', 'action' => 'bill']);
+}
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
+
+     
     public function index()
     {
         $users = $this->paginate($this->Users);
